@@ -59,11 +59,16 @@ class MainInterface(GridLayout):
 
 
     ### Calculate base values (ATF correction, OAT, PA) - return false if unable / errors / blank data
-    def update_basic_values(self):
-        if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
-            
-            self.atf_compensation = ((float(self.ids.atf.text)*100)-90)
-            self.no_error()
+    def check_input_values(self):
+        
+            try:
+                if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
+                    self.atf_compensation = ((float(self.ids.atf.text)*100)-90)
+                    self.no_error()
+            except:
+                self.show_error("ATF")
+                print("atf compensation didnt work")
+                return False
 
             try:
                 self.pa = float(self.ids.pa_label.text)
@@ -99,20 +104,32 @@ class MainInterface(GridLayout):
             print("atf compensation didnt work")
             return False
 
-    ### Calculate corrected HOGE MGW
+        return True
+
+    ### Calculate a corrected MAX HOGE MGW 
     def calc_corrected_hoge_mgw(self):
+            ## Lookup values from TAB chart
+        max_hoge_wt_1 = c_pwr_one_point_zero[self.oat][self.pa]["mgw"]*100
+        max_hoge_wt_pt_9 = c_pwr_point_nine[self.oat][self.pa]["mgw"]*100
+        ## Correct for ATFs between .9 and 1.0
+        ## how many pounds difference between .9 and 1.0
+        mgw_difference = max_hoge_wt_1 - max_hoge_wt_pt_9
+        ## 1/10 of the weight difference (to be multipled by the ATF correction (a number between 1 and 10))
+        one_part_mgw_difference = mgw_difference/10
+        ## figure out how much to add back when ATF is not 1.0 or .9
+                    # parts to add back  * weight for each part 
+        gw_atf_compensation = self.atf_compensation * one_part_mgw_difference
+        ## Max gross weight that can be HOGEd corrected for ATFs 
+        corrected_mgw = int(max_hoge_wt_pt_9 + gw_atf_compensation)
+        self.ids.hoge_mgw_label.text = str(corrected_mgw)
+        self.ids.hoge_mgw_label.disabledcolor = self.black
 
-        ## check to ensure all values are entered correctly and updates them
-        if self.update_basic_values():
-            pass
-
-
-
-
-
-
+    ## the calculate button is clicked - runs multiple functions to validate inputs and create outputs
     def calculate_values(self):
-        pass
+        ## error check and update input values
+        if self.check_input_values():
+            ## UPDATE OUTPUT VALUES
+            self.calc_corrected_hoge_mgw()
 
 
 class TabDataApp(MDApp):
