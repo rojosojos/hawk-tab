@@ -8,7 +8,7 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 
 # Set the app size
-Window.size = (320, 568)
+# Window.size = (320, 568)
 
 Builder.load_file("tab_data.kv")
 
@@ -53,6 +53,9 @@ class MainInterface(MDBoxLayout):
     def dropdown_menu_callback(self, menu_item, target_label, dropdown_menu):
         target_label.text = str(menu_item)
         dropdown_menu.dismiss()
+
+    def calculate_values(self):
+        pass
 
 
 class TabDataApp(MDApp):

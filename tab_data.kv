@@ -1,3 +1,6 @@
+<Custom_Field@MDTextField>:
+    font_size: 16
+
 <MainInterface>
     orientation: "vertical"
     # size: root.width, root.height
@@ -17,39 +20,38 @@
     #     helper_text_mode: "persistent"
 
     MDBoxLayout:
+        orientation: "vertical"
+        # size_hint_max_y: .5
+
         MDLabel:
             text: "Environmentals:"
             font_size: 32
 
-    MDBoxLayout:
-        MDRaisedButton:
-            id: pa_button
-            text: "Pressure Altitude"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: root.pa_menu.open()
-        MDLabel:
-            id: pa_label
-            text: ""
-            halign: "center"
+        MDBoxLayout:
+            MDRaisedButton:
+                id: pa_button
+                text: "Pressure Altitude"
+                pos_hint: {"center_x": .5, "center_y": .5}
+                on_release: root.pa_menu.open()
+            MDLabel:
+                id: pa_label
+                text: ""
+                halign: "center"
 
-    MDBoxLayout:
-        MDRaisedButton:
-            id: oat_button
-            text: "OAT"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: root.oat_menu.open()
-        MDLabel:
-            id: oat_label
-            text: ""
-            halign: "center"
+        MDBoxLayout:
+            MDRaisedButton:
+                id: oat_button
+                text: "OAT"
+                pos_hint: {"center_x": .5, "center_y": .5}
+                on_release: root.oat_menu.open()
+            MDLabel:
+                id: oat_label
+                text: ""
+                halign: "center"
 
-    MDBoxLayout:
         MDLabel:
             text: "Aircraft:"
             font_size: 32
-
-    MDBoxLayout:
-        orientation: "vertical"
 
         MDTextField:
             id: zero_fuel_wt
@@ -59,4 +61,42 @@
             hint_text: "Fuel Weight"
         MDTextField:
             id: atf
-            hint_text: "ATF"
+            hint_text: "ATF (.9 - 1.0)"
+
+        MDRaisedButton:
+            id: calculate_button
+            text: "Calculate"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: root.calculate_values()
+
+    MDBoxLayout:
+        orientation: "vertical"
+        # size_hint_max_y: .5
+
+        Custom_Field:
+            id: ac_weight_label
+            hint_text: "Aircraft Weight"
+            disabled: 'True'
+            text: "test"
+        Custom_Field:
+            id: hoge_mgw_label
+            hint_text: "HOGE Max Gross Weight"
+            disabled: 'True'
+        Custom_Field:
+            id: power_available_label
+            hint_text: "Power Available"
+            disabled: 'True'
+        Custom_Field:
+            id: hoge_pr_label
+            hint_text: "HOGE Power Required"
+            disabled: 'True'
+        Custom_Field:
+            id: hige_pr_label
+            hint_text: "HIGE Power Required"
+            disabled: 'True'
+        Custom_Field:
+            id: margin_label
+            hint_text: "Power Margin"
+            disabled: 'True'
+
+    
