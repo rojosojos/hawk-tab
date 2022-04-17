@@ -4,7 +4,11 @@ from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.dropdownitem import MDDropDownItem
 from kivymd.uix.menu import MDDropdownMenu
+from kivy.core.window import Window
 from kivy.lang import Builder
+
+# Set the app size
+Window.size = (320, 568)
 
 Builder.load_file("tab_data.kv")
 
