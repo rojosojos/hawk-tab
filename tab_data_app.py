@@ -22,6 +22,10 @@ class MainInterface(GridLayout):
         self.atf_compensation = 0
         self.pa = 0
         self.oat = 15
+        self.zero_fuel_wt = 16500
+        self.fuel_wt = 2400
+        self.red = (1,0,0,1)
+        self.black = (0,0,0,1)
 
         ###### PRESSURE ALTITUDE DROPDOWN MENU #######
             # values for list times (will be strings)
@@ -46,32 +50,61 @@ class MainInterface(GridLayout):
         target_label.text = str(menu_item)
         dropdown_menu.dismiss()
 
+    def no_error(self):
+        self.ids.top_heading.text = "MH-60S TAB Data"
+        self.ids.top_heading.color = self.black
+    def show_error(self, message):
+        self.ids.top_heading.text = f"Error in {message}"
+        self.ids.top_heading.color = self.red
+
+
     ### Calculate base values (ATF correction, OAT, PA) - return false if unable / errors / blank data
     def update_basic_values(self):
         if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
             
             self.atf_compensation = ((float(self.ids.atf.text)*100)-90)
+            self.no_error()
 
             try:
-                 self.pa = float(self.ids.pa_label.text)
+                self.pa = float(self.ids.pa_label.text)
+                self.no_error()
             except:
+                self.show_error("PA")
                 print("PA didnt work")
                 return False
             try:
-                 self.oat = float(self.ids.oat_label.text)
+                self.oat = float(self.ids.oat_label.text)
+                self.no_error()
             except:
+                self.show_error("OAT")
                 print("OAT didnt work")
+                return False
+            try:
+                self.zero_fuel_wt = float(self.ids.zero_fuel_wt.text)
+                self.no_error()
+            except:
+                self.show_error("Zero Fuel Weight")
+                print("zero fuel wt didn't work")
+                return False
+            try:
+                self.fuel_wt = float(self.ids.fuel_wt.text)
+                self.no_error()
+            except:
+                self.show_error("Fuel Weight")
+                print("fuel weight didn't work")
                 return False
 
         else:
+            self.show_error("ATF")
             print("atf compensation didnt work")
             return False
 
     ### Calculate corrected HOGE MGW
     def calc_corrected_hoge_mgw(self):
 
-        ## check to ensure all values are selected
-        self.update_basic_values()
+        ## check to ensure all values are entered correctly and updates them
+        if self.update_basic_values():
+            pass
 
 
 
