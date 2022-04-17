@@ -1,6 +1,6 @@
 <MainInterface>
     orientation: "vertical"
-    size: root.width, root.height
+    # size: root.width, root.height
     padding: dp(20)
     spacing: dp(10)
 
@@ -18,7 +18,7 @@
 
     MDBoxLayout:
         MDLabel:
-            text: "Environmentals"
+            text: "Environmentals:"
             font_size: 32
 
     MDBoxLayout:
@@ -42,3 +42,21 @@
             id: oat_label
             text: ""
             halign: "center"
+
+    MDBoxLayout:
+        MDLabel:
+            text: "Aircraft:"
+            font_size: 32
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        MDTextField:
+            id: zero_fuel_wt
+            hint_text: "Zero Fuel Weight"
+        MDTextField:
+            id: fuel_wt
+            hint_text: "Fuel Weight"
+        MDTextField:
+            id: atf
+            hint_text: "ATF"

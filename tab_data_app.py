@@ -21,7 +21,7 @@ class MainInterface(MDBoxLayout):
 
         pa_menu_items = [
             {
-                "text": f"PA: {i}",
+                "text": f"{i}",
                 "viewclass": "OneLineListItem",
                 # "on_release": lambda x=i: self.pa_menu_callback(x),
                 "on_release": lambda x=i: self.dropdown_menu_callback(x, self.ids.pa_label, self.pa_menu),
