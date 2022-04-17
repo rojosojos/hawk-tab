@@ -20,7 +20,6 @@ class MainInterface(GridLayout):
         # sets the number of columns in the grid layout
         self.cols = 1
 
-
         ###### PRESSURE ALTITUDE DROPDOWN MENU #######
             # values for list times (will be strings)
         press_alts = [0,500,1000,1500,2000,2500,3000,3500,4000,4500,5000,5500,6000,6500,7000,7500,8000,8500,9000,9500,10000,10500,11000,11500,12000,12500,13000]
@@ -44,7 +43,21 @@ class MainInterface(GridLayout):
         target_label.text = str(menu_item)
         dropdown_menu.dismiss()
 
-    ### 
+    ### Calculate corrected HOGE MGW
+    def calc_corrected_hoge_mgw(self):
+        if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
+            print("valid")
+
+            ac_atf = float(self.ids.atf.text)
+            atf_compensation = ((ac_atf*100)-90)
+            print(atf_compensation)
+
+
+        else:
+            print("invalid")
+
+
+
 
     def calculate_values(self):
         pass

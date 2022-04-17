@@ -54,11 +54,13 @@
         id: atf
         hint_text: "ATF (.9 - 1.0)"
         size_hint_y: 1/11
+        text: ""
 
     MDRaisedButton:
         id: calculate_button
         text: "Calculate"
         pos_hint: {"center_x": .5, "center_y": .5}
+        on_press: root.calc_corrected_hoge_mgw()
         on_release: root.calculate_values()
 
     GridLayout:
