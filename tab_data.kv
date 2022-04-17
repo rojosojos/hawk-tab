@@ -17,16 +17,28 @@
     #     helper_text_mode: "persistent"
 
     MDBoxLayout:
-        
-        
+        MDLabel:
+            text: "Environmentals"
+            font_size: 32
+
+    MDBoxLayout:
         MDRaisedButton:
-            id: button
+            id: pa_button
             text: "Pressure Altitude"
             pos_hint: {"center_x": .5, "center_y": .5}
             on_release: root.pa_menu.open()
-
         MDLabel:
             id: pa_label
             text: ""
             halign: "center"
-        
+
+    MDBoxLayout:
+        MDRaisedButton:
+            id: oat_button
+            text: "OAT"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: root.oat_menu.open()
+        MDLabel:
+            id: oat_label
+            text: ""
+            halign: "center"
