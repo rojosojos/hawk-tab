@@ -125,7 +125,6 @@ class MainInterface(GridLayout):
         ## Max gross weight that can be HOGEd corrected for ATFs 
         corrected_mgw = int(max_hoge_wt_pt_9 + gw_atf_compensation)
         self.ids.hoge_mgw_label.text = str(corrected_mgw)
-        self.ids.hoge_mgw_label.font_size = 14
 
     ### calculate aircraft weight - called after input data is validated
     def calc_aircraft_wt(self):
