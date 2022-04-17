@@ -17,46 +17,34 @@ Builder.load_file("tab_data.kv")
 class MainInterface(GridLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-
+        # sets the number of columns in the grid layout
         self.cols = 1
 
-        ## PRESSURE ALTITUDE MENU ##
+
+        ###### PRESSURE ALTITUDE DROPDOWN MENU #######
+            # values for list times (will be strings)
         press_alts = [0,500,1000,1500,2000,2500,3000,3500,4000,4500,5000,5500,6000,6500,7000,7500,8000,8500,9000,9500,10000,10500,11000,11500,12000,12500,13000]
+            # Iterates the list above to create list items with correct properties
+        pa_menu_items = [{"text": f"{i}", "viewclass": "OneLineListItem", 
+            "on_release": lambda x=i: self.dropdown_menu_callback(x, self.ids.pa_label, self.pa_menu)} for i in press_alts]
+            # create the dropdown list
+        self.pa_menu = MDDropdownMenu(caller=self.ids.pa_button, items=pa_menu_items, width_mult=3)
 
-        pa_menu_items = [
-            {
-                "text": f"{i}",
-                "viewclass": "OneLineListItem",
-                # "on_release": lambda x=i: self.pa_menu_callback(x),
-                "on_release": lambda x=i: self.dropdown_menu_callback(x, self.ids.pa_label, self.pa_menu),
-            } for i in press_alts
-        ]
-        self.pa_menu = MDDropdownMenu(
-            caller=self.ids.pa_button,
-            items=pa_menu_items,
-            width_mult=3,
-        )
-
-        ## OUTSIDE AIR TEMP MENU ##
+        ###### OUTSIDE AIR TEMP DROPDOWN MENU ########
+            # values for list times (will be strings)
         outside_air_temps = [-15,-10,-5,0,5,10,15,20,25,30,35,40]
+            # Iterates the list above to create list items with correct properties
+        oat_menu_items = [{"text":f"{oat}","viewclass": "OneLineListItem",
+            "on_release": lambda x=oat: self.dropdown_menu_callback(x, self.ids.oat_label, self.oat_menu),} for oat in outside_air_temps]
+            # create the dropdown list
+        self.oat_menu = MDDropdownMenu(caller=self.ids.oat_button, items=oat_menu_items, width_mult=3)
 
-        oat_menu_items = [
-            {
-                "text":f"{oat}",
-                "viewclass": "OneLineListItem",
-                # "on_release": lambda x=oat: self.oat_menu_callback(x),
-                "on_release": lambda x=oat: self.dropdown_menu_callback(x, self.ids.oat_label, self.oat_menu),
-            } for oat in outside_air_temps
-        ]
-        self.oat_menu = MDDropdownMenu(
-            caller=self.ids.oat_button,
-            items=oat_menu_items,
-            width_mult=3,
-        )
-
+    ### Handles clicking of a dropdown menu ###
     def dropdown_menu_callback(self, menu_item, target_label, dropdown_menu):
         target_label.text = str(menu_item)
         dropdown_menu.dismiss()
+
+    ### 
 
     def calculate_values(self):
         pass
