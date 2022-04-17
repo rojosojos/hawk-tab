@@ -1,7 +1,7 @@
 <MainInterface>
     orientation: "vertical"
     size: root.width, root.height
-    padding: dp(10)
+    padding: dp(20)
     spacing: dp(10)
 
     # MDTextField:
@@ -23,7 +23,7 @@
             id: button
             text: "Pressure Altitude"
             pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: root.menu.open()
+            on_release: root.pa_menu.open()
 
         MDLabel:
             id: pa_label

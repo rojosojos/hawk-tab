@@ -25,7 +25,7 @@ class MainInterface(MDBoxLayout):
                 "on_release": lambda x=i: self.pa_menu_callback(x),
             } for i in press_alts
         ]
-        self.menu = MDDropdownMenu(
+        self.pa_menu = MDDropdownMenu(
             caller=self.ids.button,
             items=pa_menu_items,
             width_mult=4,
@@ -33,6 +33,7 @@ class MainInterface(MDBoxLayout):
 
     def pa_menu_callback(self, text_item):
         self.ids.pa_label.text = str(text_item)
+        self.pa_menu.dismiss()
         # print(text_item)
 
 class TabDataApp(MDApp):
