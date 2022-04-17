@@ -58,17 +58,12 @@ class MainInterface(GridLayout):
         self.ids.top_heading.color = self.red
 
 
+    # def resize_output
+
+
     ### Calculate base values (ATF correction, OAT, PA) - return false if unable / errors / blank data
     def check_input_values(self):
         
-        try:
-            if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
-                self.atf_compensation = ((float(self.ids.atf.text)*100)-90)
-                self.no_error()
-        except:
-            self.show_error("ATF")
-            print("atf compensation didnt work")
-            return False
         try:
             self.pa = float(self.ids.pa_label.text)
             self.no_error()
@@ -97,8 +92,21 @@ class MainInterface(GridLayout):
             self.show_error("Fuel Weight")
             print("fuel weight didn't work")
             return False
+        try:
+            if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
+                self.atf_compensation = ((float(self.ids.atf.text)*100)-90)
+                self.no_error()
+            else:
+                self.show_error("ATF")
+                print("atf compensation didnt work")
+                return False
+        except:
+            self.show_error("ATF")
+            print("atf compensation didnt work")
+            return False
 
         return True
+
 
     ### Calculate a corrected MAX HOGE MGW 
     def calc_corrected_hoge_mgw(self):
@@ -116,7 +124,8 @@ class MainInterface(GridLayout):
         ## Max gross weight that can be HOGEd corrected for ATFs 
         corrected_mgw = int(max_hoge_wt_pt_9 + gw_atf_compensation)
         self.ids.hoge_mgw_label.text = str(corrected_mgw)
-        self.ids.hoge_mgw_label.disabledcolor = self.black
+        self.ids.hoge_mgw_label.font_size = 14
+
 
     ## the calculate button is clicked - runs multiple functions to validate inputs and create outputs
     def calculate_values(self):
