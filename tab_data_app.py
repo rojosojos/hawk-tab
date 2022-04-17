@@ -54,14 +54,6 @@ class MainInterface(MDBoxLayout):
         target_label.text = str(menu_item)
         dropdown_menu.dismiss()
 
-    # def pa_menu_callback(self, menu_item):
-    #     self.ids.pa_label.text = str(menu_item)
-    #     self.pa_menu.dismiss()
-
-    # def oat_menu_callback(self, menu_item):
-    #     self.ids.oat_label.text = str(menu_item)
-    #     self.oat_menu.dismiss()
-
 
 class TabDataApp(MDApp):
 
