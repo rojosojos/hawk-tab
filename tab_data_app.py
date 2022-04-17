@@ -24,6 +24,7 @@ class MainInterface(GridLayout):
         self.oat = 15
         self.zero_fuel_wt = 16500
         self.fuel_wt = 2400
+        self.ac_wt = 18900
         self.red = (1,0,0,1)
         self.black = (0,0,0,1)
 
@@ -108,7 +109,7 @@ class MainInterface(GridLayout):
         return True
 
 
-    ### Calculate a corrected MAX HOGE MGW 
+    ### Calculate a corrected MAX HOGE MGW - called after input data is validated
     def calc_corrected_hoge_mgw(self):
             ## Lookup values from TAB chart
         max_hoge_wt_1 = c_pwr_one_point_zero[self.oat][self.pa]["mgw"]*100
@@ -126,6 +127,11 @@ class MainInterface(GridLayout):
         self.ids.hoge_mgw_label.text = str(corrected_mgw)
         self.ids.hoge_mgw_label.font_size = 14
 
+    ### calculate aircraft weight - called after input data is validated
+    def calc_aircraft_wt(self):
+        self.ac_wt = int(self.zero_fuel_wt + self.fuel_wt)
+        self.ids.ac_weight_label.text = str(self.ac_wt)
+
 
     ## the calculate button is clicked - runs multiple functions to validate inputs and create outputs
     def calculate_values(self):
@@ -133,6 +139,7 @@ class MainInterface(GridLayout):
         if self.check_input_values():
             ## UPDATE OUTPUT VALUES
             self.calc_corrected_hoge_mgw()
+            self.calc_aircraft_wt()
 
 
 class TabDataApp(MDApp):
