@@ -1,0 +1,20 @@
+<MainInterface>
+    orientation: "vertical"
+
+    # MDTextField:
+    #     id: "pa_input"
+    #     hint_text: "Enter Pressure Altitude"
+    #     helper_text: "Pressure Altitude"
+    #     helper_text_mode: "persistent"
+
+    # MDTextField:
+    #     id: "oat_input"
+    #     hint_text: "Enter Outside Air Temp"
+    #     helper_text: "OAT"
+    #     helper_text_mode: "persistent"
+
+    MDRaisedButton:
+        id: button
+        text: "PRESS ME"
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_release: root.menu.open()
