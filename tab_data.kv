@@ -1,102 +1,99 @@
 <Custom_Field@MDTextField>:
+    font_size: 12
+<HeadingLabel@MDLabel>:
     font_size: 16
 
 <MainInterface>
-    orientation: "vertical"
-    # size: root.width, root.height
-    padding: dp(20)
-    spacing: dp(10)
+    
+    size: root.width, root.height
+    padding: dp(10)
+    spacing: dp(5)
 
-    # MDTextField:
-    #     id: "pa_input"
-    #     hint_text: "Enter Pressure Altitude"
-    #     helper_text: "Pressure Altitude"
-    #     helper_text_mode: "persistent"
 
-    # MDTextField:
-    #     id: "oat_input"
-    #     hint_text: "Enter Outside Air Temp"
-    #     helper_text: "OAT"
-    #     helper_text_mode: "persistent"
+    HeadingLabel:
+        text: "MH-60S TAB Data"
+        size_hint_y: 1/11 
 
-    MDBoxLayout:
-        orientation: "vertical"
-        # size_hint_max_y: .5
-
-        MDLabel:
-            text: "Environmentals:"
-            font_size: 32
-
-        MDBoxLayout:
-            MDRaisedButton:
-                id: pa_button
-                text: "Pressure Altitude"
-                pos_hint: {"center_x": .5, "center_y": .5}
-                on_release: root.pa_menu.open()
-            MDLabel:
-                id: pa_label
-                text: ""
-                halign: "center"
-
-        MDBoxLayout:
-            MDRaisedButton:
-                id: oat_button
-                text: "OAT"
-                pos_hint: {"center_x": .5, "center_y": .5}
-                on_release: root.oat_menu.open()
-            MDLabel:
-                id: oat_label
-                text: ""
-                halign: "center"
-
-        MDLabel:
-            text: "Aircraft:"
-            font_size: 32
-
-        MDTextField:
-            id: zero_fuel_wt
-            hint_text: "Zero Fuel Weight"
-        MDTextField:
-            id: fuel_wt
-            hint_text: "Fuel Weight"
-        MDTextField:
-            id: atf
-            hint_text: "ATF (.9 - 1.0)"
+    GridLayout:
+        cols: 2
+        spacing: dp(5)
+        size_hint_y: 2/11
+        #left, top, right, bottom
+        padding: (dp(0), dp(0), dp(0), dp(10))
 
         MDRaisedButton:
-            id: calculate_button
-            text: "Calculate"
+            id: pa_button
+            text: "Pressure Altitude"
             pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: root.calculate_values()
+            on_release: root.pa_menu.open()
+        MDLabel:
+            id: pa_label
+            text: ""
+            halign: "center"
 
-    MDBoxLayout:
-        orientation: "vertical"
-        # size_hint_max_y: .5
+        MDRaisedButton:
+            id: oat_button
+            text: "OAT"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            on_release: root.oat_menu.open()
+        MDLabel:
+            id: oat_label
+            text: ""
+            halign: "center"
+
+
+    MDTextField:
+        id: zero_fuel_wt
+        hint_text: "Zero Fuel Weight"
+        size_hint_y: 1/11
+    MDTextField:
+        id: fuel_wt
+        hint_text: "Fuel Weight"
+        size_hint_y: 1/11
+    MDTextField:
+        id: atf
+        hint_text: "ATF (.9 - 1.0)"
+        size_hint_y: 1/11
+
+    MDRaisedButton:
+        id: calculate_button
+        text: "Calculate"
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_release: root.calculate_values()
+
+    GridLayout:
+        size_hint_y: 3/11
+        cols: 2
+        #left, top, right, bottom
+        padding: (dp(0), dp(15), dp(0), dp(10))
 
         Custom_Field:
             id: ac_weight_label
             hint_text: "Aircraft Weight"
             disabled: 'True'
-            text: "test"
+            text: "16500"
         Custom_Field:
             id: hoge_mgw_label
-            hint_text: "HOGE Max Gross Weight"
+            hint_text: "HOGE MGW"
             disabled: 'True'
-        Custom_Field:
-            id: power_available_label
-            hint_text: "Power Available"
-            disabled: 'True'
+            text: "18000"
         Custom_Field:
             id: hoge_pr_label
-            hint_text: "HOGE Power Required"
+            hint_text: "HOGE PR"
             disabled: 'True'
+            text: "112"
+        Custom_Field:
+            id: power_available_label
+            hint_text: "PA"
+            disabled: 'True'
+            text: "115"
         Custom_Field:
             id: hige_pr_label
-            hint_text: "HIGE Power Required"
+            hint_text: "HIGE PR"
             disabled: 'True'
+            text: "105"
         Custom_Field:
             id: margin_label
-            hint_text: "Power Margin"
+            hint_text: "Margin"
             disabled: 'True'
-
-    
+            text: "3"
