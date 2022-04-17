@@ -23,7 +23,8 @@ class MainInterface(MDBoxLayout):
             {
                 "text": f"PA: {i}",
                 "viewclass": "OneLineListItem",
-                "on_release": lambda x=i: self.pa_menu_callback(x),
+                # "on_release": lambda x=i: self.pa_menu_callback(x),
+                "on_release": lambda x=i: self.dropdown_menu_callback(x, self.ids.pa_label, self.pa_menu),
             } for i in press_alts
         ]
         self.pa_menu = MDDropdownMenu(
@@ -39,7 +40,8 @@ class MainInterface(MDBoxLayout):
             {
                 "text":f"{oat}",
                 "viewclass": "OneLineListItem",
-                "on_release": lambda x=oat: self.oat_menu_callback(x),
+                # "on_release": lambda x=oat: self.oat_menu_callback(x),
+                "on_release": lambda x=oat: self.dropdown_menu_callback(x, self.ids.oat_label, self.oat_menu),
             } for oat in outside_air_temps
         ]
         self.oat_menu = MDDropdownMenu(
@@ -48,13 +50,17 @@ class MainInterface(MDBoxLayout):
             width_mult=4,
         )
 
-    def pa_menu_callback(self, menu_item):
-        self.ids.pa_label.text = str(menu_item)
-        self.pa_menu.dismiss()
+    def dropdown_menu_callback(self, menu_item, target_label, dropdown_menu):
+        target_label.text = str(menu_item)
+        dropdown_menu.dismiss()
 
-    def oat_menu_callback(self, menu_item):
-        self.ids.oat_label.text = str(menu_item)
-        self.oat_menu.dismiss()
+    # def pa_menu_callback(self, menu_item):
+    #     self.ids.pa_label.text = str(menu_item)
+    #     self.pa_menu.dismiss()
+
+    # def oat_menu_callback(self, menu_item):
+    #     self.ids.oat_label.text = str(menu_item)
+    #     self.oat_menu.dismiss()
 
 
 class TabDataApp(MDApp):
