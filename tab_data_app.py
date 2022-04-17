@@ -19,6 +19,9 @@ class MainInterface(GridLayout):
         super().__init__(**kwargs)
         # sets the number of columns in the grid layout
         self.cols = 1
+        self.atf_compensation = 0
+        self.pa = 0
+        self.oat = 15
 
         ###### PRESSURE ALTITUDE DROPDOWN MENU #######
             # values for list times (will be strings)
@@ -43,18 +46,34 @@ class MainInterface(GridLayout):
         target_label.text = str(menu_item)
         dropdown_menu.dismiss()
 
-    ### Calculate corrected HOGE MGW
-    def calc_corrected_hoge_mgw(self):
+    ### Calculate base values (ATF correction, OAT, PA) - return false if unable / errors / blank data
+    def update_basic_values(self):
         if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
-            print("valid")
+            
+            self.atf_compensation = ((float(self.ids.atf.text)*100)-90)
 
-            ac_atf = float(self.ids.atf.text)
-            atf_compensation = ((ac_atf*100)-90)
-            print(atf_compensation)
-
+            try:
+                 self.pa = float(self.ids.pa_label.text)
+            except:
+                print("PA didnt work")
+                return False
+            try:
+                 self.oat = float(self.ids.oat_label.text)
+            except:
+                print("OAT didnt work")
+                return False
 
         else:
-            print("invalid")
+            print("atf compensation didnt work")
+            return False
+
+    ### Calculate corrected HOGE MGW
+    def calc_corrected_hoge_mgw(self):
+
+        ## check to ensure all values are selected
+        self.update_basic_values()
+
+
 
 
 
