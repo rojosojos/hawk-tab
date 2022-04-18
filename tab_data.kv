@@ -1,5 +1,6 @@
 <Custom_Field@MDTextField>:
     font_size: 16
+    disabled: "True"
 <HeadingLabel@MDLabel>:
     font_size: 16
 
@@ -57,12 +58,22 @@
         size_hint_y: 1/11
         text: ""
 
-    MDRaisedButton:
-        id: calculate_button
-        text: "Calculate"
-        pos_hint: {"center_x": .5, "center_y": .5}
-        # on_press: root.check_input_values()
-        on_release: root.calculate_values()
+    GridLayout:
+        cols: 2
+        size_hint_y: 1/11
+
+        MDRaisedButton:
+            id: calculate_button
+            text: "Calculate"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            # on_press: root.check_input_values()
+            on_release: root.calculate_values()
+
+        MDLabel:
+            id: margin_label
+            font_size: 20
+            halign: "center"
+            valign: "middle"
 
     GridLayout:
         size_hint_y: 3/11
@@ -73,30 +84,25 @@
         Custom_Field:
             id: ac_weight_label
             hint_text: "Aircraft Weight"
-            disabled: 'True'
-            # text: "16500"
+
         Custom_Field:
             id: hoge_mgw_label
             hint_text: "Max HOGE Wt"
-            disabled: 'True'
-            # text: "18000"
+
         Custom_Field:
             id: hoge_pr_label
             hint_text: "HOGE PR"
-            disabled: 'True'
-            # text: "112"
+
         Custom_Field:
             id: power_available_label
             hint_text: "PA"
-            disabled: 'True'
-            # text: "115"
+
         Custom_Field:
             id: hige_pr_label
             hint_text: "HIGE PR"
-            disabled: 'True'
-            # text: "105"
+
         Custom_Field:
-            id: margin_label
-            hint_text: "Margin"
-            disabled: 'True'
-            # text: "3"
+            id: da_label
+            hint_text: "DA"
+
+

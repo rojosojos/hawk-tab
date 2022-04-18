@@ -28,8 +28,10 @@ class MainInterface(GridLayout):
         self.ac_wt = 18900
         self.corrected_mgw = 18000
         self.rule_of_thumb_correction = 0
+        self.power_margin = 0
         self.red = (1,0,0,1)
         self.black = (0,0,0,1)
+        self.yellow = (237/255, 204/255, 14/255, 1)
         self.green = (0,1,0,1)
 
         ###### PRESSURE ALTITUDE DROPDOWN MENU #######
@@ -167,7 +169,18 @@ class MainInterface(GridLayout):
         self.ids.hoge_pr_label.text = str(hoge_trq_required)
 
         ## Compute Power Margin
-        self.ids.margin_label.text = str(power_available-hoge_trq_required)
+        self.power_margin = power_available - hoge_trq_required
+        self.ids.margin_label.text = f"Margin: {str(self.power_margin)}"
+        ## Color Margin Text
+            # green when self.power_margin>=6%
+            # yellow when self.power_margin > 0%
+            # red when self.power_margin <0% 
+        if self.power_margin > 6:
+            self.ids.margin_label.color = self.green
+        elif self.power_margin <= 6 and self.power_margin >= 0:
+            self.ids.margin_label.color = self.yellow
+        else:
+            self.ids.margin_label.color = self.red
 
 
     def calc_hige_power_required(self):
@@ -186,6 +199,11 @@ class MainInterface(GridLayout):
         self.ids.hige_pr_label.text = str(hige_trq_required)
 
 
+    def lookup_da(self):
+        """Looks up density altitude and color the label"""
+        self.ids.da_label.text = str(c_pwr_one_point_zero[self.oat][self.pa]["da"])
+
+
     def calculate_values(self):
         """calculate button is clicked - runs multiple functions to validate inputs and create outputs"""
         ## error check and update input values
@@ -196,6 +214,7 @@ class MainInterface(GridLayout):
             self.calc_rot_correction()
             self.calc_hoge_powers()
             self.calc_hige_power_required()
+            self.lookup_da()
 
 
 class TabDataApp(MDApp):
