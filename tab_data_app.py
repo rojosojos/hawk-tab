@@ -19,12 +19,15 @@ class MainInterface(GridLayout):
         super().__init__(**kwargs)
         # sets the number of columns in the grid layout
         self.cols = 1
+        # app variables
         self.atf_compensation = 0
         self.pa = 0
         self.oat = 15
         self.zero_fuel_wt = 16500
         self.fuel_wt = 2400
         self.ac_wt = 18900
+        self.corrected_mgw = 18000
+        self.rule_of_thumb_correction = 0
         self.red = (1,0,0,1)
         self.black = (0,0,0,1)
 
@@ -123,13 +126,24 @@ class MainInterface(GridLayout):
                     # parts to add back  * weight for each part 
         gw_atf_compensation = self.atf_compensation * one_part_mgw_difference
         ## Max gross weight that can be HOGEd corrected for ATFs 
-        corrected_mgw = int(max_hoge_wt_pt_9 + gw_atf_compensation)
-        self.ids.hoge_mgw_label.text = str(corrected_mgw)
+        self.corrected_mgw = int(max_hoge_wt_pt_9 + gw_atf_compensation)
+        self.ids.hoge_mgw_label.text = str(self.corrected_mgw)
+
 
     ### calculate aircraft weight - called after input data is validated
     def calc_aircraft_wt(self):
         self.ac_wt = int(self.zero_fuel_wt + self.fuel_wt)
         self.ids.ac_weight_label.text = str(self.ac_wt)
+
+
+    def calc_rot_correction(self):
+        """Rule of thumb power correction 200lbs = 1% TRQ
+             NOTE: must be called after calc_corrected_hoge_mgw so that self.corrected_mgw has been calculated
+             NOTE: must be called after calc_aircraft_wt so that self.ac_wt has been calculated"""
+
+         ## correction for aircraft weights less than max
+         #BUG does not check if AC GW is greater than HOGE capability 23-9 
+        self.rule_of_thumb_correction = int((self.corrected_mgw - self.ac_wt)/200)
 
 
     ## the calculate button is clicked - runs multiple functions to validate inputs and create outputs
@@ -139,6 +153,7 @@ class MainInterface(GridLayout):
             ## UPDATE OUTPUT VALUES
             self.calc_corrected_hoge_mgw()
             self.calc_aircraft_wt()
+            self.calc_rot_correction()
 
 
 class TabDataApp(MDApp):
