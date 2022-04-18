@@ -30,6 +30,7 @@ class MainInterface(GridLayout):
         self.rule_of_thumb_correction = 0
         self.red = (1,0,0,1)
         self.black = (0,0,0,1)
+        self.green = (0,1,0,1)
 
         ###### PRESSURE ALTITUDE DROPDOWN MENU #######
             # values for list times (will be strings)
@@ -54,15 +55,14 @@ class MainInterface(GridLayout):
         target_label.text = str(menu_item)
         dropdown_menu.dismiss()
 
+
+    ### Handles displaying Errors during input data validation
     def no_error(self):
         self.ids.top_heading.text = "MH-60S TAB Data"
         self.ids.top_heading.color = self.black
     def show_error(self, message):
         self.ids.top_heading.text = f"Error in {message}"
         self.ids.top_heading.color = self.red
-
-
-    # def resize_output
 
 
     ### Calculate base values (ATF correction, OAT, PA) - return false if unable / errors / blank data
@@ -146,6 +146,30 @@ class MainInterface(GridLayout):
         self.rule_of_thumb_correction = int((self.corrected_mgw - self.ac_wt)/200)
 
 
+    def calc_hoge_powers(self):
+        """Calculate HOGE power required, HOGE power available, and power margin"""
+     
+        ## Lookup values from TAB chart
+        max_hoge_trq_1 = c_pwr_one_point_zero[self.oat][self.pa]["oge"]
+        max_hoge_trq_pt_9 = c_pwr_point_nine[self.oat][self.pa]["oge"]
+        
+        ## correction for ATF different than 1.0 or .9
+        #BUG not sure why we would use ATF in power required calculation (because gross weight changes)
+        hoge_trq_difference = max_hoge_trq_1 - max_hoge_trq_pt_9
+        one_part_hoge_trq_difference = hoge_trq_difference/10
+        hoge_trq_atf_compensation = (10-self.atf_compensation) * one_part_hoge_trq_difference
+
+        ## OUTPUT - Power Available & HOGE POWER REQUIRED ##
+        power_available = int(max_hoge_trq_1 - hoge_trq_atf_compensation)
+        self.ids.power_available_label.text = str(power_available)
+
+        hoge_trq_required = int(max_hoge_trq_1 - self.rule_of_thumb_correction - hoge_trq_atf_compensation)
+        self.ids.hoge_pr_label.text = str(hoge_trq_required)
+
+        ## Compute Power Margin
+        self.ids.margin_label.text = str(power_available-hoge_trq_required)
+
+
     ## the calculate button is clicked - runs multiple functions to validate inputs and create outputs
     def calculate_values(self):
         ## error check and update input values
@@ -154,10 +178,10 @@ class MainInterface(GridLayout):
             self.calc_corrected_hoge_mgw()
             self.calc_aircraft_wt()
             self.calc_rot_correction()
+            self.calc_hoge_powers()
 
 
 class TabDataApp(MDApp):
-
     def build(self):
         return MainInterface()
 
