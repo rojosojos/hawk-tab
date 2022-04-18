@@ -72,28 +72,24 @@ class MainInterface(GridLayout):
             self.no_error()
         except:
             self.show_error("PA")
-            print("PA didnt work")
             return False
         try:
             self.oat = float(self.ids.oat_label.text)
             self.no_error()
         except:
             self.show_error("OAT")
-            print("OAT didnt work")
             return False
         try:
             self.zero_fuel_wt = float(self.ids.zero_fuel_wt.text)
             self.no_error()
         except:
             self.show_error("Zero Fuel Weight")
-            print("zero fuel wt didn't work")
             return False
         try:
             self.fuel_wt = float(self.ids.fuel_wt.text)
             self.no_error()
         except:
             self.show_error("Fuel Weight")
-            print("fuel weight didn't work")
             return False
         try:
             if self.ids.atf.text !="" and (self.ids.atf.text.isnumeric() or self.ids.atf.text[0]==".") and float(self.ids.atf.text)>=.9 and float(self.ids.atf.text)<=1.0:
@@ -101,11 +97,9 @@ class MainInterface(GridLayout):
                 self.no_error()
             else:
                 self.show_error("ATF")
-                print("atf compensation didnt work")
                 return False
         except:
             self.show_error("ATF")
-            print("atf compensation didnt work")
             return False
 
         return True
