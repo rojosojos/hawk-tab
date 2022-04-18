@@ -17,6 +17,7 @@ class MainInterface(GridLayout):
         # sets the number of columns in the grid layout
         self.cols = 1
         # app variables
+        self.SAFE_TRQ_MARGIN = 6
         self.atf_compensation = 0
         self.pa = 0
         self.oat = 15
@@ -26,6 +27,7 @@ class MainInterface(GridLayout):
         self.corrected_mgw = 18000
         self.rule_of_thumb_correction = 0
         self.power_margin = 0
+        self.safe_fuel_load = 0
         self.red = (1,0,0,1)
         self.black = (0,0,0,1)
         self.yellow = (237/255, 204/255, 14/255, 1)
@@ -166,12 +168,28 @@ class MainInterface(GridLayout):
             # green when self.power_margin>=6%
             # yellow when self.power_margin > 0%
             # red when self.power_margin <0% 
-        if self.power_margin > 6:
+        if self.power_margin >= self.SAFE_TRQ_MARGIN:
             self.ids.margin_label.color = self.green
-        elif self.power_margin <= 6 and self.power_margin >= 0:
+        elif self.power_margin < self.SAFE_TRQ_MARGIN and self.power_margin >= 0:
             self.ids.margin_label.color = self.yellow
+            self.calc_safe_fuel_load()
         else:
             self.ids.margin_label.color = self.red
+            self.calc_safe_fuel_load()
+
+
+    def calc_safe_fuel_load(self):
+        
+        trq_to_safe_margin = self.SAFE_TRQ_MARGIN - self.power_margin
+        # use rule of thumb (200lbs = 1%) to figure out how much fuel to burn
+        fuel_to_burn = trq_to_safe_margin*200
+
+        # check if it is possible to burn that much fuel
+        if self.fuel_wt - fuel_to_burn > 450:
+            self.safe_fuel_load = int(self.fuel_wt - fuel_to_burn)
+            self.ids.margin_label.text += f"\nSafe Fuel: {self.safe_fuel_load}"
+        else:
+            self.ids.margin_label.text += "\nNo Safe Fuel"
 
 
     def calc_hige_power_required(self):
