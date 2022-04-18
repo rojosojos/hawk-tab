@@ -170,8 +170,24 @@ class MainInterface(GridLayout):
         self.ids.margin_label.text = str(power_available-hoge_trq_required)
 
 
-    ## the calculate button is clicked - runs multiple functions to validate inputs and create outputs
+    def calc_hige_power_required(self):
+            #########  HIGE TORQUE REQUIRED    ############
+        ## Lookup values from TAB chart
+        max_hige_trq_1 = c_pwr_one_point_zero[self.oat][self.pa]["ige"]
+        max_hige_trq_pt_9 = c_pwr_point_nine[self.oat][self.pa]["ige"]
+        ## correction for ATF different than 1.0 or .9
+        #BUG not sure why we would use ATF in power required calculation (because gross weight changes)
+        hige_trq_difference = max_hige_trq_1 - max_hige_trq_pt_9
+        one_part_hige_trq_difference = hige_trq_difference/10
+        hige_trq_atf_compensation = (10-self.atf_compensation) * one_part_hige_trq_difference
+
+        ## OUTPUT - HIGE POWER REQUIRED ##
+        hige_trq_required = int(max_hige_trq_1 - self.rule_of_thumb_correction - hige_trq_atf_compensation)
+        self.ids.hige_pr_label.text = str(hige_trq_required)
+
+
     def calculate_values(self):
+        """calculate button is clicked - runs multiple functions to validate inputs and create outputs"""
         ## error check and update input values
         if self.check_input_values():
             ## UPDATE OUTPUT VALUES
@@ -179,6 +195,7 @@ class MainInterface(GridLayout):
             self.calc_aircraft_wt()
             self.calc_rot_correction()
             self.calc_hoge_powers()
+            self.calc_hige_power_required()
 
 
 class TabDataApp(MDApp):
